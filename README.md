@@ -2,13 +2,17 @@
 
 本项目面向红细胞增多症患者的早筛与精准分级。实验上通过高速相机拍摄红细胞通过微流控芯片窄颈区域的连续图像，代码侧从拍摄后的图像和视频中提取细胞通过窄颈时的动态生物力学特征、形态学特征，以及经过 SAM/MATLAB 流程得到的静态特征，最终用于区分正常人与不同严重程度的红细胞增多症患者。
 
-![整体流程](picture/pipeline.jpg)
+<p align="center">
+  <img src="picture/pipeline.jpg" alt="整体流程" width="80%">
+</p>
 
 ## YOLO 识别效果
 
 下面的动图由 `picture/yolo/channel_1_frame_*.jpg` 按帧号顺序生成，播放速度为 20 fps，即 1 秒展示 20 张识别结果。
 
-![YOLO detection demo](picture/yolo_demo_20fps.gif)
+<p align="center">
+  <img src="picture/yolo_demo_20fps.gif" alt="YOLO detection demo">
+</p>
 
 ## 项目结构
 
@@ -63,6 +67,10 @@ python AutoLabel_for_yolo/set_neck.py /path/to/sample --scale 0.5
 
 `cell_detect.py` 是自动标注的核心检测模块。它不是直接调用深度学习模型，而是利用微流控图像的颜色、位置和形态先验来获得稳定的单细胞 bbox。
 
+<p align="center">
+  <img src="picture/cell_detect_pipeline.svg" alt="cell_detect 自动细胞检测流程" width="80%">
+</p>
+
 1. 输入图像预处理  
    若图像中已经带有黄色 neck 线、青色标签或白色文字，脚本会先检测这些高亮标注区域，并用 OpenCV inpaint 修复。这样可以避免标注像素在 LAB-B 通道中被误认为红细胞。
 
@@ -89,6 +97,10 @@ python AutoLabel_for_yolo/set_neck.py /path/to/sample --scale 0.5
 
 9. watershed 拆分粘连细胞  
    对面积偏大、fill ratio 偏低或 solidity 偏低的候选，脚本使用 distance transform 寻找中心峰，再用 watershed 尝试拆分重叠或粘连细胞。拆分结果还会经过面积和形状复核，避免把一个不规则单细胞过度拆开。
+
+<p align="center">
+  <img src="picture/circularity_vs_solidity_comparison.svg" alt="circularity 与 solidity 对棘状细胞和多细胞的区分" width="80%">
+</p>
 
 10. NMS 去重  
     最后使用 non-maximum suppression 删除重复框或被大框包含的小框，保留面积更合理的候选，输出稳定的单细胞 bbox。
@@ -126,7 +138,9 @@ sample/
 - Enter 保存当前图像的 YOLO 标签与可视化结果。
 - Esc 保存断点，下次从当前图像继续。
 
-![自动/人工标注示例](picture/AutoLabel_for_yolo.png)
+<p align="center">
+  <img src="picture/AutoLabel_for_yolo.png" alt="自动/人工标注示例" width="80%">
+</p>
 
 ## yolo
 
@@ -163,6 +177,10 @@ sample/
 
 `sam_after_yolo.py` 当前版本使用每个 patient/track 目录下的单个 `cell.png` 作为基准细胞模板，用它在同一序列的其他图像中定位并分割同一个细胞。它与 `cell_pickup_for_segmentaion.py` 的三模板流程可以配合使用，但需要注意当前脚本读取的是 `cell.png`，而不是 `cell1.png/cell2.png/cell3.png`。
 
+<p align="center">
+  <img src="picture/cell_tracking_v5_complete_pipeline.svg" alt="sam_after_yolo 基于基准细胞的一致性追踪分割流程" width="60%">
+</p>
+
 处理逻辑如下：
 
 1. 输入与排序  
@@ -176,6 +194,10 @@ sample/
 
 4. 构造 SAM prompt  
    模板定位会返回细胞中心、最佳缩放比例、匹配分数和匹配框大小。脚本据此构造一个放大的 box prompt，并生成 9 个前景点：1 个中心点加 8 个环形点。box prompt 限制 SAM 的搜索范围，避免选中整条通道；多点 prompt 告诉 SAM 这些点属于同一个细胞，降低折叠、变形或颜色不均导致的半细胞分割。
+
+<p align="center">
+  <img src="picture/folded_cell_fix_strategy.svg" alt="9 点 prompt 修复折叠细胞分割策略" width="60%">
+</p>
 
 5. 多候选 mask 后处理  
    SAM 使用 `multimask_output=True` 输出多个候选 mask。每个候选先经过形态学闭运算填小孔、开运算去噪，再只保留最大连通域，去掉远处碎片。若后处理后的 solidity 低于 `0.90`，脚本会使用凸包填充，修复折叠细胞或双凹结构被 SAM 切掉的凹陷区域。
