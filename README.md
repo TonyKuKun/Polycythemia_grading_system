@@ -8,12 +8,6 @@
 
 ## YOLO 识别效果
 
-下面的动图由 `picture/yolo/channel_1_frame_*.jpg` 按帧号顺序生成，播放速度为 20 fps，即 1 秒展示 20 张识别结果。
-
-<p align="center">
-  <img src="picture/yolo_demo_20fps.gif" alt="YOLO detection demo">
-</p>
-
 ## 项目结构
 
 ```text
@@ -152,6 +146,12 @@ sample/
 6. 输出 `irbc_summary.csv`、`irbc_details.csv`，并保存轨迹相关的原图和标注图，供后续基准细胞选择与 SAM 分割使用。
 
 `yolo/segmentation_after_yolo.py` 和 `yolo/for_classification.py` 用于把 YOLO 后筛选出的轨迹图像进一步整理和分割。它们会读取指定轨迹 ID，复制对应文件夹，并基于 `cell1/cell2/cell3` 模板、模板匹配和 SAM 生成 `matlabphotos2-seg` 结构。
+
+下面的动图由 `picture/yolo/channel_1_frame_*.jpg` 按帧号顺序生成，播放速度为 20 fps，即 1 秒展示 20 张识别结果。
+
+<p align="center">
+  <img src="picture/yolo_demo_20fps.gif" alt="YOLO detection demo">
+</p>
 
 ## classification_after_yolo
 
