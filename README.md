@@ -176,7 +176,7 @@ sample/
 
 ### `sam_after_yolo.py`: 基于基准细胞的一致性追踪分割
 
-`sam_after_yolo.py` 当前版本使用每个 patient/track 目录下的单个 `cell.png` 作为基准细胞模板，用它在同一序列的其他图像中定位并分割同一个细胞。它与 `cell_pickup_for_segmentaion.py` 的三模板流程可以配合使用，但需要注意当前脚本读取的是 `cell.png`，而不是 `cell1.png/cell2.png/cell3.png`。
+`sam_after_yolo.py` 当前版本使用每个 patient/track 目录下的单个 `cell.png` 作为基准细胞模板，用它在同一序列的其他图像中定位并分割同一个细胞。它与 `cell_pickup_for_segmentaion.py` 的三模板流程可以配合使用。
 
 <p align="center">
   <img src="picture/cell_tracking_v5_complete_pipeline.svg" alt="sam_after_yolo 基于基准细胞的一致性追踪分割流程" width="60%">
