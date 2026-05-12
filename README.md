@@ -6,7 +6,6 @@
   <img src="picture/pipeline.jpg" alt="整体流程" width="80%">
 </p>
 
-## YOLO 识别效果
 
 ## 项目结构
 
