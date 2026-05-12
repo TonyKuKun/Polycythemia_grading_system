@@ -138,10 +138,6 @@ sample/
 - Enter 保存当前图像的 YOLO 标签与可视化结果。
 - Esc 保存断点，下次从当前图像继续。
 
-<p align="center">
-  <img src="picture/AutoLabel_for_yolo.png" alt="自动/人工标注示例" width="80%">
-</p>
-
 ## yolo
 
 `yolo/yolomodel.py` 使用 Ultralytics YOLOv8n 训练三分类检测模型。当前脚本中数据集路径、预训练权重路径、图像尺寸、batch、epochs 等参数写在代码内，复现实验时需要根据本机环境修改。
@@ -172,6 +168,11 @@ sample/
 - 实时预览裁剪结果。
 - 保存 `cell1.png`、`cell2.png`、`cell3.png` 三个基准细胞。
 - 已保存的样本会自动跳过，方便批量补标。
+
+<p align="center">
+  <img src="picture/AutoLabel_for_yolo.png" alt="自动/人工标注示例" width="80%">
+</p>
+
 
 ### `sam_after_yolo.py`: 基于基准细胞的一致性追踪分割
 
